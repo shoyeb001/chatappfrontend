@@ -9,6 +9,8 @@ import {
     isSameUser,
 } from "../../../config/chatlogic";
 import { ChatState } from '../../../context/ChatProvider';
+const server_url = process.env.REACT_APP_ENDPOINT;
+
 
 export const ScrollableChat = ({ messages }) => {
     const { user } = ChatState();
@@ -27,7 +29,7 @@ export const ScrollableChat = ({ messages }) => {
                                             size="sm"
                                             cursor="pointer"
                                             name={m.sender.name}
-                                            src={m.sender.pic}
+                                            src={`${server_url}//${m.sender.img}`}
                                         />
                                     </Tooltip>
                                 )}

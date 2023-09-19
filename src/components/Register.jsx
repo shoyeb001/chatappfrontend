@@ -13,6 +13,7 @@ import {
 const Register = () => {
     const [show, setShow] = useState(false)
     const handleClick = () => setShow(!show)
+    const [loading, setLoading] = useState(false);
     const [user, setUser] = useState({
         name: "",
         username: "",
@@ -39,7 +40,7 @@ const Register = () => {
     };
 
     const submit = async () => {
-
+        setLoading(true);
         const formData = new FormData();
         formData.append('name', user.name);
         formData.append('username', user.username);
@@ -62,6 +63,7 @@ const Register = () => {
                 isClosable: true,
             });
             localStorage.setItem("token",JSON.stringify(response.data));
+            setLoading(false);
             return navigate("/chat");
         } catch (error) {
             console.error('Registration error', error);
@@ -106,7 +108,7 @@ const Register = () => {
                     onChange={handleFileChange} placeholder='Confirm Password' mb="2" />
             </FormControl>
             <FormControl>
-                <Button colorScheme='blue' onClick={submit} w="100%" >
+                <Button colorScheme='blue' isLoading={loading} onClick={submit} w="100%" >
                     Register
                 </Button>
             </FormControl>

@@ -19,9 +19,11 @@ import { useState } from 'react'
 import LoadChat from './LoadChat'
 import axios from 'axios'
 import UserList from './UserList'
+import { getSender } from '../../config/chatlogic'
+import "../../styles/header.css"
 
 const Header = () => {
-    const { user, setChats, chats, notification, setNotification } = ChatState();
+    const { user, setChats, chats, notification, setNotification, setSelectedChats, selectedChats } = ChatState();
     const navigate = useNavigate();
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [search, setSearch] = useState("")
@@ -29,6 +31,7 @@ const Header = () => {
     const [chatUsers, setChatusers] = useState();
     const toast = useToast();
     const url = process.env.REACT_APP_API_URL;
+    const server_url = process.env.REACT_APP_ENDPOINT;
 
     const handelSearch = async () => {
         if (!search) {
@@ -69,17 +72,18 @@ const Header = () => {
         return navigate("/");
     }
 
-    const accessChat = async(userId) => {
+    const accessChat = async (userId) => {
         try {
             setLoading(true);
             const token = JSON.parse(localStorage.getItem("token"));
             const headers = {
-                "Content_type":"application/json",
+                "Content_type": "application/json",
                 Authorization: `Bearer ${token.access_token}`,
             }
-            const createChat = await axios.post(`${url}/chat/get`,{userId:userId}, {headers});
-            if(chats!==undefined && !chats.find((c)=>c._id===createChat.data._id)) setChats([createChat.data], ...chats);
-            setChats(createChat.data);
+            const createChat = await axios.post(`${url}/chat/get`, { userId: userId }, { headers });
+            if (!chats.find((c) => c._id === createChat.data._id)) setChats([createChat.data, ...chats]);
+
+            setSelectedChats(createChat.data);
             setLoading(false);
             console.log(createChat);
             onClose();
@@ -107,18 +111,35 @@ const Header = () => {
                 <Text fontSize="2xl" fontWeight="600" color="#50c9c5">MyChat</Text>
                 <div>
                     <Menu>
-                        <MenuButton as={Button} variant={'unstyled'}><AiOutlineBell style={{ fontSize: "20px" }} /></MenuButton>
+                        <MenuButton as={Button} variant={'unstyled'} style={{ position: 'relative' }}><AiOutlineBell style={{ fontSize: "20px" }} />
+                        {
+                            notification.length>0 ? (<>
+                             <div className="badge">
+                                {notification.length}
+                            </div>
+                            </>):(<></>)
+                        }
+                        </MenuButton>
                         <Portal>
                             <MenuList>
-                                <MenuItem>New Message from shoyeb</MenuItem>
-                                <MenuItem>New Message from shoyeb</MenuItem>
-                                <MenuItem>New Message from shoyeb</MenuItem>
-                                <MenuItem>New Message from shoyeb</MenuItem>
+                                {notification.map((notif) => (
+                                    <MenuItem
+                                        key={notif._id}
+                                        onClick={() => {
+                                            setSelectedChats(notif.chat);
+                                            setNotification(notification.filter((n) => n !== notif));
+                                        }}
+                                    >
+                                        {notif.chat.isGroupChat
+                                            ? `New Message in ${notif.chat.chatName}`
+                                            : `New Message from ${getSender(user, notif.chat.users)}`}
+                                    </MenuItem>
+                                ))}
                             </MenuList>
                         </Portal>
                     </Menu>
                     <Menu>
-                        <MenuButton><Avatar name='Dan Abrahmov' size="sm" src={`http://localhost:5000//${user?.img}`} /></MenuButton>
+                        <MenuButton><Avatar name='Dan Abrahmov' size="sm" src={`${server_url}//${user?.img}`} /></MenuButton>
                         <Portal>
                             <MenuList>
                                 <ProfileModal user={user}>

@@ -12,6 +12,7 @@ import {useDisclosure, Modal,
 
 const ProfileModal = ({user,children}) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const server_url = process.env.REACT_APP_ENDPOINT;
 
   return (
     <>
@@ -23,7 +24,7 @@ const ProfileModal = ({user,children}) => {
                     <ModalCloseButton />
                     <ModalBody textAlign={'center'}>
                         <div>
-                            <Avatar name={user?.name} size="2xl" src={`http://localhost:5000//${user?.img}`} />
+                            <Avatar name={user?.name} size="2xl" src={`${server_url}//${user?.img}`} />
                             <Text>{user?.username}</Text>
                         </div>
                     </ModalBody>

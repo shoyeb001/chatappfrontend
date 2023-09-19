@@ -10,6 +10,7 @@ import url from '../../../config';
 import { ScrollableChat } from './ScrollableChat';
 import UpdateGroupchatModal from '../modals/UpdateGroupchatModal';
 import {io} from "socket.io-client";
+import "../../../styles/single.css";
 
 const ENDPOINT = process.env.REACT_APP_ENDPOINT;
 console.log(ENDPOINT);
@@ -26,6 +27,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const [socketConnect, setSocketConnect] = useState(false);
     const toast = useToast();
     const token = JSON.parse(localStorage.getItem("token"));
+    
 
     const sendMessage = async (e) => {
         if (e.key === 'Enter' && newMessage) {
@@ -213,7 +215,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                         margin="auto"
                     />
                 ) : (
-                    <div className="messages">
+                    <div className="messages" >
                         <ScrollableChat messages={messages} />
                     </div>
                 )}

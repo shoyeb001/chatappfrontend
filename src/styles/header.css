@@ -1,0 +1,17 @@
+.badge{
+    position: absolute;
+    top: 0%;
+    right: 32%;
+    color: #fff;
+    left: 21%;
+    bottom: 56%;
+    background-color: brown;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}

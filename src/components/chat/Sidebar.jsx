@@ -97,7 +97,6 @@ const Sidebar = ({fetchAgain}) => {
                         borderRadius={'lg'}
                         key={chat._id}
                         >
-
                         <Text fontSize={'sm'}>
                           {!chat.isGroupChat
                             ? getSender(user, chat.users)

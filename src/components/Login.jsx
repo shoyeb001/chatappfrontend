@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react'
 const Login = () => {
     const [show, setShow] = useState(false)
+    const [loading, setLoading] = useState(false);
     const handleClick = () => setShow(!show)
     const {user, setUser} = ChatState();
 
@@ -34,6 +35,7 @@ const Login = () => {
         })
     }
     const submit = async () => {
+        setLoading(true);
         try {
             const response = await axios.post("/api/login", luser);
             console.log(response);
@@ -59,6 +61,7 @@ const Login = () => {
 
             // }
             // fetchUser();
+            setLoading(false);
             return navigate("/chat");
         } catch (error) {
             console.log(error);
@@ -68,6 +71,7 @@ const Login = () => {
                 duration: 9000,
                 isClosable: true,
             });
+            setLoading(false);
         }
 
     }
@@ -95,7 +99,7 @@ const Login = () => {
                 </InputGroup>
             </FormControl>
             <FormControl>
-                <Button colorScheme='blue' onClick={submit} w="100%" >
+                <Button colorScheme='blue' isLoading={loading} onClick={submit} w="100%" >
                     Login
                 </Button>
             </FormControl>
