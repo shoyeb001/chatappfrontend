@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { ChatState } from '../context/ChatProvider';
 import axios from 'axios';
+import url from '../config';
 import {
     FormControl,
     FormLabel,
@@ -37,7 +38,7 @@ const Login = () => {
     const submit = async () => {
         setLoading(true);
         try {
-            const response = await axios.post("/api/login", luser);
+            const response = await axios.post(`${url}/login`, luser);
             console.log(response);
             toast({
                 title: 'You logged in successfully',

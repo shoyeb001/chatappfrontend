@@ -10,6 +10,7 @@ import {
     InputRightElement,
     useToast
 } from '@chakra-ui/react'
+import url from '../config';
 const Register = () => {
     const [show, setShow] = useState(false)
     const handleClick = () => setShow(!show)
@@ -49,7 +50,7 @@ const Register = () => {
         formData.append('photo', file);
 
         try {
-            const response = await axios.post('/api/register', formData, {
+            const response = await axios.post(`${url}/register`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

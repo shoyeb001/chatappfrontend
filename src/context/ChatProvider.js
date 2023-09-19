@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import url from "../config";
 
 const ChatContext = createContext();
 
@@ -25,7 +26,7 @@ const ChatProvider = ({ children }) => {
             const headers = {
                 Authorization: `Bearer ${token.access_token}`,
             };
-            const userInfo = await axios.get("/api/user/view", { headers });
+            const userInfo = await axios.get(`${url}/user/view`, { headers });
             setUser(userInfo.data);
             console.log(userInfo.data);
             console.log(user, "chatuser");
